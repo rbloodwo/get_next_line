@@ -35,7 +35,8 @@ char	*access_file(int fd, t_fileinfo *finfo)
 	char	*temp;
 
 	temp = ft_strnew(BUFF_SIZE);
-	while ((finfo->bytes = read(fd, buf, BUFF_SIZE)) > 0)
+	while ((ft_strchr(temp, '\n')) == NULL &&
+	(finfo->bytes = read(fd, buf, BUFF_SIZE)) > 0)
 	{
 		buf[finfo->bytes] = '\0';
 		temp = ft_strjoin_gnl(temp, buf);
@@ -76,10 +77,10 @@ int		checks(char **line, char *str, t_fileinfo *finfo)
 
 int		get_next_line(const int fd, char **line)
 {
-	static char		*str[1024];
+	static char		*str[MAX_FD];
 	t_fileinfo		finfo;
 
-	if (!line || fd < 0)
+	if (fd < 0 || fd > MAX_FD || !line)
 		return (-1);
 	if (!str[fd])
 		str[fd] = ft_strnew(BUFF_SIZE);
